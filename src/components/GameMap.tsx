@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import type { Coordinates, TreasureLocation } from "../types/hunt";
 
 interface GameMapProps {
@@ -15,6 +15,7 @@ export function GameMap({
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<google.maps.Map | null>(null);
   const markersRef = useRef<google.maps.Marker[]>([]);
+  const [showMapTip, setShowMapTip] = useState(true);
 
   // initialize map
   useEffect(() => {
@@ -38,6 +39,7 @@ export function GameMap({
     map.addListener("dblclick", (e: google.maps.MapMouseEvent) => {
       if (e.latLng) {
         onNavigateStreetView(e.latLng.lat(), e.latLng.lng());
+        setShowMapTip(false);
       }
     });
 
@@ -56,6 +58,7 @@ export function GameMap({
       (e: google.maps.MapMouseEvent) => {
         if (e.latLng) {
           onNavigateStreetView(e.latLng.lat(), e.latLng.lng());
+          setShowMapTip(false);
         }
       },
     );
@@ -106,9 +109,11 @@ export function GameMap({
           💡 Hint
         </button>
       )} */}
-      <div className="map-tip">
-        Double-click the map to explore that area in Street View
-      </div>
+      {showMapTip && (
+        <div className="map-tip">
+          Double-click the map to explore that area in Street View
+        </div>
+      )}
     </div>
   );
 }

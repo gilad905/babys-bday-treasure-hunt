@@ -162,12 +162,12 @@ export function StreetViewPanel({
         className="compass-btn"
         onClick={handleCompass}
         disabled={compassesLeft <= 0 || !currentLocation}
-        style={{ position: "absolute", top: 16, right: 16, zIndex: 10 }}
+        style={{ position: "absolute", top: 10, right: 60, zIndex: 10 }}
       >
         🧭 Compass ({compassesLeft})
       </button>
       {showDistance && lastDistance !== null && (
-        <div className="compass-distance" style={{ position: "absolute", top: 60, right: 16, background: "#222b", color: "#fff", padding: "10px 18px", borderRadius: 8, zIndex: 11 }}>
+        <div className="compass-distance" style={{ position: "absolute", top: 50, right: 60, background: "#222b", color: "#fff", padding: "10px 18px", borderRadius: 8, zIndex: 11 }}>
           {`You are ${(lastDistance < 1000 ? lastDistance.toFixed(1) + ' m' : (lastDistance/1000).toFixed(2) + ' km')} from the clue.`}
         </div>
       )}
