@@ -1,13 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import type {
-  TreasureLocation,
-  Coordinates,
-  TreasureHunt,
-} from "../types/hunt";
+import type { TreasureLocation, Coordinates } from "../types/hunt";
 import { TreasureMarker } from "./TreasureMarker";
 
 interface StreetViewPanelProps {
-  hunt: TreasureHunt;
   currentLocation: TreasureLocation | null;
   foundLocations: Coordinates[];
   onTreasureFound: () => void;
@@ -19,7 +14,6 @@ function computeDistance(a: google.maps.LatLng, b: google.maps.LatLng): number {
 }
 
 export function StreetViewPanel({
-  hunt,
   currentLocation,
   foundLocations,
   onTreasureFound,
@@ -64,17 +58,17 @@ export function StreetViewPanel({
     const listener = panorama.addListener("position_changed", () => {
       const pos = panorama.getPosition();
       if (!pos) return;
-      const [lat, lng] = currentLocation.coordinates.split(",").map(Number);
+      const { lat, lng } = currentLocation.coordinates;
       const targetLatLng = new google.maps.LatLng(lat, lng);
       const distance = computeDistance(pos, targetLatLng);
-      setIsNearTreasure(distance <= hunt.proximityRadius);
+      setIsNearTreasure(distance <= currentLocation.proximityRadius);
     });
 
     return () => {
       google.maps.event.removeListener(listener);
       setIsNearTreasure(false);
     };
-  }, [currentLocation, hunt.proximityRadius]);
+  }, [currentLocation]);
 
   // check street view availability when navigating
   useEffect(() => {
@@ -146,7 +140,7 @@ export function StreetViewPanel({
     if (!panorama) return;
     const pos = panorama.getPosition();
     if (!pos) return;
-    const [lat, lng] = currentLocation.coordinates.split(",").map(Number);
+    const { lat, lng } = currentLocation.coordinates;
     const targetLatLng = new google.maps.LatLng(lat, lng);
     const distance = computeDistance(pos, targetLatLng);
     setLastDistance(distance);
@@ -167,8 +161,20 @@ export function StreetViewPanel({
         🧭 Compass ({compassesLeft})
       </button>
       {showDistance && lastDistance !== null && (
-        <div className="compass-distance" style={{ position: "absolute", top: 50, right: 60, background: "#222b", color: "#fff", padding: "10px 18px", borderRadius: 8, zIndex: 11 }}>
-          {`You are ${(lastDistance < 1000 ? lastDistance.toFixed(0) + ' meters' : (lastDistance/1000).toFixed(0) + ' km')} away!`}
+        <div
+          className="compass-distance"
+          style={{
+            position: "absolute",
+            top: 50,
+            right: 60,
+            background: "#222b",
+            color: "#fff",
+            padding: "10px 18px",
+            borderRadius: 8,
+            zIndex: 11,
+          }}
+        >
+          {`You are ${lastDistance < 1000 ? lastDistance.toFixed(0) + " meters" : (lastDistance / 1000).toFixed(0) + " km"} away!`}
         </div>
       )}
       {!svAvailable && (

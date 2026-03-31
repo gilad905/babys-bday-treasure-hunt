@@ -2,23 +2,26 @@
   "id": "treasure-hunt",
   "name": "Baby's Birthday Treasure Hunt",
   "description": "",
-  "imageUrl": "/treasures/treasure-chest.svg",
-  "proximityRadius": 120,
-  "streetViewPov": { "heading": 175, "pitch": 30 },
   "locations": [
     {
       "id": "loc-goura-pakora",
-      "name": "Goura Pakora",
-      "coordinates": "52.51067233844895, 13.45733136453828",
+      "name": "Goura Pakora, where we had our first date",
+      "coordinates": { "lat": 52.51067233844895, "lng": 13.45733136453828 },
       "clueHidden": "Where two strangers found out each other's names, and later Netflix brought the flames",
-      "clue": "Where two strangers found out each other's names, and Curry helped to start the flames"
+      "clue": "Where two strangers found out each other's names, and Curry helped to start the flames",
+      "imageUrl": "/treasures/treasure-chest.svg",
+      "streetViewPov": { "heading": 175, "pitch": 30 },
+      "proximityRadius": 120
     },
     {
       "id": "loc-goura-museum-island",
-      "name": "Where I Proposed (Museum Island)",
-      "coordinates": "52.517797113824905, 13.398017316706584",
+      "name": "Where I Proposed (near Museum Island)",
+      "coordinates": { "lat": 52.517797113824905, "lng": 13.398017316706584 },
       "clue": "A lonely island among history and art, a cold night marks an important start",
-      "clueHidden": ""
+      "clueHidden": "",
+      "imageUrl": "/treasures/treasure-chest.svg",
+      "streetViewPov": { "heading": 175, "pitch": 30 },
+      "proximityRadius": 120
     }
   ]
 }

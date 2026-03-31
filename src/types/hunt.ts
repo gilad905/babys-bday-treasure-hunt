@@ -10,17 +10,16 @@ export interface StreetViewPov {
 
 export interface TreasureLocation {
   id: string;
-  coordinates: string;
-  // coordinates: Coordinates;
+  name: string;
+  coordinatesText: string;
+  coordinates: Coordinates;
   clue: string;
   clueHidden: string;
-  // imageUrl: string;
+  imageUrl: string;
   // suggested street view camera angle for viewing the treasure
-  // streetViewPov: StreetViewPov;
+  streetViewPov: StreetViewPov;
   // how close (meters) the player must be in street view to see the marker
-  // proximityRadius: number;
-  // congratsMessage: string;
-  name: string;
+  proximityRadius: number;
 }
 
 export interface TreasureHunt {
@@ -28,9 +27,6 @@ export interface TreasureHunt {
   name: string;
   description: string;
   locations: TreasureLocation[];
-  imageUrl: string;
-  streetViewPov: StreetViewPov;
-  proximityRadius: number;
 }
 
 export interface GameState {

@@ -22,10 +22,13 @@ export function GameMap({
     if (!navigator.geolocation) return;
     const watchId = navigator.geolocation.watchPosition(
       (pos) => {
-        setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setUserLocation({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        });
       },
       () => {},
-      { enableHighAccuracy: true, maximumAge: 10000, timeout: 10000 }
+      { enableHighAccuracy: true, maximumAge: 10000, timeout: 10000 },
     );
     return () => {
       navigator.geolocation.clearWatch(watchId);
@@ -100,10 +103,9 @@ export function GameMap({
             scaledSize: new google.maps.Size(36, 36),
           },
           title: `Found: ${loc.id}`,
-        })
+        }),
       );
     });
-
 
     // user location marker
     if (userLocation) {
@@ -120,16 +122,15 @@ export function GameMap({
             strokeWeight: 2,
           },
           title: "Your location",
-        })
+        }),
       );
     }
 
     // current hunt location marker
     if (currentLocation) {
-      const [lat, lng] = currentLocation.coordinates.split(",").map(Number);
       markers.push(
         new google.maps.Marker({
-          position: { lat, lng },
+          position: currentLocation.coordinates,
           map,
           icon: {
             path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
@@ -141,7 +142,7 @@ export function GameMap({
           },
           title: `Current clue: ${currentLocation.name}`,
           zIndex: 999,
-        })
+        }),
       );
     }
 
@@ -151,9 +152,7 @@ export function GameMap({
   const handleFlyToHint = useCallback(() => {
     if (!currentLocation || !mapRef.current) return;
     // zoom to general area (not exact — that would be a spoiler)
-    const [lat, lng] = currentLocation.coordinates.split(",").map(Number);
-    const coords = { lat, lng };
-    mapRef.current.setCenter(coords);
+    mapRef.current.setCenter(currentLocation.coordinates);
     mapRef.current.setZoom(12);
   }, [currentLocation]);
 

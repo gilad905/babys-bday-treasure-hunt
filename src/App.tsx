@@ -77,8 +77,7 @@ function App() {
     .filter((loc) => state?.foundLocations.includes(loc.id))
     .map((loc) => ({ id: loc.id, coordinates: loc.coordinates }))
     .map((loc) => {
-      const [lat, lng] = loc.coordinates.split(",").map(Number);
-      return { id: loc.id, coordinates: { lat, lng } };
+      return { id: loc.id, coordinates: loc.coordinates };
     });
 
   // derive next clue for found overlay
@@ -147,7 +146,6 @@ function App() {
               </div>
               <div className="game-layout__street-view" ref={streetViewRef}>
                 <StreetViewPanel
-                  hunt={hunt}
                   currentLocation={currentLocation}
                   foundLocations={foundLocationsData.map((l) => l.coordinates)}
                   onTreasureFound={handleTreasureFound}
