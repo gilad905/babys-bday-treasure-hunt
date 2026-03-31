@@ -29,6 +29,9 @@ export function StreetViewPanel({
   const panoramaRef = useRef<google.maps.StreetViewPanorama | null>(null);
   const [isNearTreasure, setIsNearTreasure] = useState(false);
   const [svAvailable, setSvAvailable] = useState(true);
+  const [compassesLeft, setCompassesLeft] = useState(10);
+  const [lastDistance, setLastDistance] = useState<number | null>(null);
+  const [showDistance, setShowDistance] = useState(false);
 
   // initialize panorama
   useEffect(() => {
@@ -136,9 +139,38 @@ export function StreetViewPanel({
     };
   }, [foundLocations]);
 
+  // handle compass button click
+  const handleCompass = () => {
+    if (!currentLocation || compassesLeft <= 0) return;
+    const panorama = panoramaRef.current;
+    if (!panorama) return;
+    const pos = panorama.getPosition();
+    if (!pos) return;
+    const [lat, lng] = currentLocation.coordinates.split(",").map(Number);
+    const targetLatLng = new google.maps.LatLng(lat, lng);
+    const distance = computeDistance(pos, targetLatLng);
+    setLastDistance(distance);
+    setShowDistance(true);
+    setCompassesLeft((prev) => prev - 1);
+    setTimeout(() => setShowDistance(false), 3500);
+  };
+
   return (
     <div className="street-view-panel">
       <div ref={containerRef} className="street-view-container" />
+      <button
+        className="compass-btn"
+        onClick={handleCompass}
+        disabled={compassesLeft <= 0 || !currentLocation}
+        style={{ position: "absolute", top: 16, right: 16, zIndex: 10 }}
+      >
+        🧭 Compass ({compassesLeft})
+      </button>
+      {showDistance && lastDistance !== null && (
+        <div className="compass-distance" style={{ position: "absolute", top: 60, right: 16, background: "#222b", color: "#fff", padding: "10px 18px", borderRadius: 8, zIndex: 11 }}>
+          {`You are ${(lastDistance < 1000 ? lastDistance.toFixed(1) + ' m' : (lastDistance/1000).toFixed(2) + ' km')} from the clue.`}
+        </div>
+      )}
       {!svAvailable && (
         <div className="street-view-unavailable">
           <p>
