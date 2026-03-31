@@ -33,7 +33,7 @@ export function StreetViewPanel({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const startPos = initialPosition ?? { lat: 48.8584, lng: 2.2945 };
+    const startPos = initialPosition ?? { lat: 52.50315974350624, lng: 13.293348498355584 };
     const panorama = new google.maps.StreetViewPanorama(containerRef.current, {
       position: startPos,
       pov: { heading: 0, pitch: 0 },

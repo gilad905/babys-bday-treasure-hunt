@@ -18,32 +18,15 @@ export function GameMap({
   const mapRef = useRef<google.maps.Map | null>(null);
   const markersRef = useRef<google.maps.Marker[]>([]);
   const [showMapTip, setShowMapTip] = useState(true);
-  const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
-  // get user geolocation
-  useEffect(() => {
-    if (!navigator.geolocation) return;
-    const watchId = navigator.geolocation.watchPosition(
-      (pos) => {
-        setUserLocation({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        });
-      },
-      () => {},
-      { enableHighAccuracy: true, maximumAge: 10000, timeout: 10000 },
-    );
-    return () => {
-      navigator.geolocation.clearWatch(watchId);
-    };
-  }, []);
+  const startingLocation = { lat: 52.50315974350624, lng: 13.293348498355584 };
 
   // initialize map
   useEffect(() => {
     if (!containerRef.current) return;
 
     const map = new google.maps.Map(containerRef.current, {
-      center: { lat: 48.8584, lng: 2.2945 },
-      zoom: 3,
+      center: startingLocation,
+      zoom: 12,
       streetViewControl: false,
       mapTypeControl: false,
       styles: [
@@ -109,25 +92,6 @@ export function GameMap({
       );
     });
 
-    // user location marker
-    if (userLocation) {
-      markers.push(
-        new google.maps.Marker({
-          position: userLocation,
-          map,
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 8,
-            fillColor: "#4285F4",
-            fillOpacity: 1,
-            strokeColor: "white",
-            strokeWeight: 2,
-          },
-          title: "Your location",
-        }),
-      );
-    }
-
     // current hunt location marker (only show in dev mode)
     if (currentLocation && import.meta.env.DEV) {
       markers.push(
@@ -157,19 +121,19 @@ export function GameMap({
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 8,
-            fillColor: '#1976d2',
+            fillColor: "#1976d2",
             fillOpacity: 1,
-            strokeColor: '#fff',
+            strokeColor: "#fff",
             strokeWeight: 2,
           },
-          title: 'Street View position',
+          title: "Street View position",
           zIndex: 1000,
         }),
       );
     }
 
     markersRef.current = markers;
-  }, [foundLocations, userLocation, currentLocation, streetViewPosition]);
+  }, [foundLocations, currentLocation, streetViewPosition]);
 
   // const handleFlyToHint = useCallback(() => {
   //   if (!currentLocation || !mapRef.current) return;

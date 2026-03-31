@@ -1,4 +1,4 @@
-import type { TreasureHunt, GameState } from '../types/hunt';
+import type { TreasureHunt, GameState } from "../types/hunt";
 
 interface GameCompleteProps {
   hunt: TreasureHunt;
@@ -30,12 +30,16 @@ export function GameComplete({ hunt, state, onPlayAgain }: GameCompleteProps) {
 
         <div className="game-complete__stats">
           <div className="game-complete__stat">
-            <span className="game-complete__stat-value">{hunt.locations.length}</span>
+            <span className="game-complete__stat-value">
+              {hunt.locations.length}
+            </span>
             <span className="game-complete__stat-label">Treasures Found</span>
           </div>
           {duration > 0 && (
             <div className="game-complete__stat">
-              <span className="game-complete__stat-value">{formatDuration(duration)}</span>
+              <span className="game-complete__stat-value">
+                {formatDuration(duration)}
+              </span>
               <span className="game-complete__stat-label">Total Time</span>
             </div>
           )}
@@ -45,7 +49,7 @@ export function GameComplete({ hunt, state, onPlayAgain }: GameCompleteProps) {
           <h3>Locations Discovered</h3>
           <ul>
             {hunt.locations.map((loc) => (
-              <li key={loc.id}>{loc.congratsMessage}</li>
+              <li key={loc.id}>🎉 You found {loc.name}!</li>
             ))}
           </ul>
         </div>
