@@ -1,16 +1,18 @@
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Coordinates, TreasureLocation } from "../types/hunt";
 
 interface GameMapProps {
   foundLocations: { id: string; coordinates: Coordinates }[];
   currentLocation: TreasureLocation | null;
   onNavigateStreetView: (lat: number, lng: number) => void;
+  streetViewPosition?: Coordinates | null;
 }
 
 export function GameMap({
   foundLocations,
   currentLocation,
   onNavigateStreetView,
+  streetViewPosition,
 }: GameMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<google.maps.Map | null>(null);
@@ -126,8 +128,8 @@ export function GameMap({
       );
     }
 
-    // current hunt location marker
-    if (currentLocation) {
+    // current hunt location marker (only show in dev mode)
+    if (currentLocation && import.meta.env.DEV) {
       markers.push(
         new google.maps.Marker({
           position: currentLocation.coordinates,
@@ -146,15 +148,35 @@ export function GameMap({
       );
     }
 
-    markersRef.current = markers;
-  }, [foundLocations, userLocation]);
+    // street view position marker
+    if (streetViewPosition) {
+      markers.push(
+        new google.maps.Marker({
+          position: streetViewPosition,
+          map,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 8,
+            fillColor: '#1976d2',
+            fillOpacity: 1,
+            strokeColor: '#fff',
+            strokeWeight: 2,
+          },
+          title: 'Street View position',
+          zIndex: 1000,
+        }),
+      );
+    }
 
-  const handleFlyToHint = useCallback(() => {
-    if (!currentLocation || !mapRef.current) return;
-    // zoom to general area (not exact — that would be a spoiler)
-    mapRef.current.setCenter(currentLocation.coordinates);
-    mapRef.current.setZoom(12);
-  }, [currentLocation]);
+    markersRef.current = markers;
+  }, [foundLocations, userLocation, currentLocation, streetViewPosition]);
+
+  // const handleFlyToHint = useCallback(() => {
+  //   if (!currentLocation || !mapRef.current) return;
+  //   // zoom to general area (not exact — that would be a spoiler)
+  //   mapRef.current.setCenter(currentLocation.coordinates);
+  //   mapRef.current.setZoom(12);
+  // }, [currentLocation]);
 
   return (
     <div className="game-map-panel">

@@ -9,7 +9,7 @@ import { StreetViewPanel } from "./components/StreetViewPanel";
 import { FoundOverlay } from "./components/FoundOverlay";
 // import sampleHunt from "./data/sample-hunt.json";
 import realHunt from "./data/hunt.json";
-import type { TreasureHunt } from "./types/hunt";
+import type { TreasureHunt, Coordinates } from "./types/hunt";
 import "./App.css";
 
 const hunt = realHunt as TreasureHunt;
@@ -30,6 +30,7 @@ function App() {
   const [screen, setScreen] = useState<Screen>(state ? "playing" : "start");
   const [justFoundMessage, setJustFoundMessage] = useState("");
   const streetViewRef = useRef<HTMLDivElement>(null);
+  const [streetViewPosition, setStreetViewPosition] = useState<Coordinates | null>(null);
 
   const handleStart = useCallback(() => {
     startGame();
@@ -89,7 +90,7 @@ function App() {
   if (!API_KEY || API_KEY === "YOUR_API_KEY_HERE") {
     return (
       <div className="api-key-missing">
-        <h1>🗺️ Baby's Birthday Treasure Hunt</h1>
+        <h1>🗺️ Baby's Bday Treasure Hunt</h1>
         <p>
           To play, you need a Google Maps API key. Create one at{" "}
           <a
@@ -142,6 +143,7 @@ function App() {
                   foundLocations={foundLocationsData}
                   currentLocation={currentLocation}
                   onNavigateStreetView={handleNavigateStreetView}
+                  streetViewPosition={streetViewPosition}
                 />
               </div>
               <div className="game-layout__street-view" ref={streetViewRef}>
@@ -149,6 +151,7 @@ function App() {
                   currentLocation={currentLocation}
                   foundLocations={foundLocationsData.map((l) => l.coordinates)}
                   onTreasureFound={handleTreasureFound}
+                  onPositionChange={setStreetViewPosition}
                 />
               </div>
             </main>

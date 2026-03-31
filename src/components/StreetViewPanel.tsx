@@ -7,6 +7,7 @@ interface StreetViewPanelProps {
   foundLocations: Coordinates[];
   onTreasureFound: () => void;
   initialPosition?: Coordinates;
+  onPositionChange?: (pos: Coordinates) => void;
 }
 
 function computeDistance(a: google.maps.LatLng, b: google.maps.LatLng): number {
@@ -18,6 +19,7 @@ export function StreetViewPanel({
   foundLocations,
   onTreasureFound,
   initialPosition,
+  onPositionChange,
 }: StreetViewPanelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const panoramaRef = useRef<google.maps.StreetViewPanorama | null>(null);
@@ -58,17 +60,26 @@ export function StreetViewPanel({
     const listener = panorama.addListener("position_changed", () => {
       const pos = panorama.getPosition();
       if (!pos) return;
+      if (typeof onPositionChange === 'function') {
+        onPositionChange({ lat: pos.lat(), lng: pos.lng() });
+      }
       const { lat, lng } = currentLocation.coordinates;
       const targetLatLng = new google.maps.LatLng(lat, lng);
       const distance = computeDistance(pos, targetLatLng);
       setIsNearTreasure(distance <= currentLocation.proximityRadius);
     });
 
+    // call onPositionChange initially
+    const pos = panorama.getPosition();
+    if (pos && typeof onPositionChange === 'function') {
+      onPositionChange({ lat: pos.lat(), lng: pos.lng() });
+    }
+
     return () => {
       google.maps.event.removeListener(listener);
       setIsNearTreasure(false);
     };
-  }, [currentLocation]);
+  }, [currentLocation, onPositionChange]);
 
   // check street view availability when navigating
   useEffect(() => {
