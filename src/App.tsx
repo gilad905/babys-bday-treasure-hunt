@@ -17,6 +17,8 @@ const hunt = realHunt as TreasureHunt;
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
 
 type Screen = "start" | "playing" | "found" | "complete";
+const initialPosition: Coordinates = { lat: 52.50315974350624, lng: 13.293348498355584 };
+
 
 function App() {
   const {
@@ -140,6 +142,7 @@ function App() {
             <main className="game-layout__main">
               <div className="game-layout__map">
                 <GameMap
+                  initialPosition={initialPosition}
                   foundLocations={foundLocationsData}
                   currentLocation={currentLocation}
                   onNavigateStreetView={handleNavigateStreetView}
@@ -148,6 +151,7 @@ function App() {
               </div>
               <div className="game-layout__street-view" ref={streetViewRef}>
                 <StreetViewPanel
+                  initialPosition={initialPosition}
                   currentLocation={currentLocation}
                   foundLocations={foundLocationsData.map((l) => l.coordinates)}
                   onTreasureFound={handleTreasureFound}

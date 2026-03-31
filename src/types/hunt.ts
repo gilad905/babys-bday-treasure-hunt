@@ -19,7 +19,9 @@ export interface TreasureLocation {
   // suggested street view camera angle for viewing the treasure
   streetViewPov: StreetViewPov;
   // how close (meters) the player must be in street view to see the marker
-  proximityRadius: number;
+  markerRadius: number;
+  // how close (meters) the player must be in street view to get a "near" message
+  nearRadius: number;
 }
 
 export interface TreasureHunt {

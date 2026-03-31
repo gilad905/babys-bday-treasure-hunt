@@ -6,7 +6,7 @@ interface StreetViewPanelProps {
   currentLocation: TreasureLocation | null;
   foundLocations: Coordinates[];
   onTreasureFound: () => void;
-  initialPosition?: Coordinates;
+  initialPosition: Coordinates;
   onPositionChange?: (pos: Coordinates) => void;
 }
 
@@ -24,6 +24,7 @@ export function StreetViewPanel({
   const containerRef = useRef<HTMLDivElement>(null);
   const panoramaRef = useRef<google.maps.StreetViewPanorama | null>(null);
   const [isNearTreasure, setIsNearTreasure] = useState(false);
+  const [isNearMarker, setIsNearMarker] = useState(false);
   const [svAvailable, setSvAvailable] = useState(true);
   const [compassesLeft, setCompassesLeft] = useState(10);
   const [lastDistance, setLastDistance] = useState<number | null>(null);
@@ -33,7 +34,7 @@ export function StreetViewPanel({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const startPos = initialPosition ?? { lat: 52.50315974350624, lng: 13.293348498355584 };
+    const startPos = initialPosition;
     const panorama = new google.maps.StreetViewPanorama(containerRef.current, {
       position: startPos,
       pov: { heading: 0, pitch: 0 },
@@ -60,24 +61,26 @@ export function StreetViewPanel({
     const listener = panorama.addListener("position_changed", () => {
       const pos = panorama.getPosition();
       if (!pos) return;
-      if (typeof onPositionChange === 'function') {
+      if (typeof onPositionChange === "function") {
         onPositionChange({ lat: pos.lat(), lng: pos.lng() });
       }
       const { lat, lng } = currentLocation.coordinates;
       const targetLatLng = new google.maps.LatLng(lat, lng);
       const distance = computeDistance(pos, targetLatLng);
-      setIsNearTreasure(distance <= currentLocation.proximityRadius);
+      setIsNearTreasure(distance <= currentLocation.nearRadius);
+      setIsNearMarker(distance <= currentLocation.markerRadius);
     });
 
     // call onPositionChange initially
     const pos = panorama.getPosition();
-    if (pos && typeof onPositionChange === 'function') {
+    if (pos && typeof onPositionChange === "function") {
       onPositionChange({ lat: pos.lat(), lng: pos.lng() });
     }
 
     return () => {
       google.maps.event.removeListener(listener);
       setIsNearTreasure(false);
+      setIsNearMarker(false);
     };
   }, [currentLocation, onPositionChange]);
 
@@ -144,6 +147,18 @@ export function StreetViewPanel({
     };
   }, [foundLocations]);
 
+  const getDistanceString = (distance: number | null): string => {
+    if (distance === null) return "";
+    const distanceKm = distance / 1000;
+    if (distanceKm < 1) {
+      return `You are ${distance.toFixed(0)} meters away!`;
+    } else if (distanceKm < 5000) {
+      return `You are ${distanceKm.toFixed(0)} km away`;
+    } else {
+      return `You are ${distanceKm.toFixed(0)} km away... Try a different country?`;
+    }
+  };
+
   // handle compass button click
   const handleCompass = () => {
     if (!currentLocation || compassesLeft <= 0) return;
@@ -185,7 +200,7 @@ export function StreetViewPanel({
             zIndex: 11,
           }}
         >
-          {`You are ${lastDistance < 1000 ? lastDistance.toFixed(0) + " meters" : (lastDistance / 1000).toFixed(0) + " km"} away!`}
+          {getDistanceString(lastDistance)}
         </div>
       )}
       {!svAvailable && (
@@ -200,14 +215,14 @@ export function StreetViewPanel({
         <TreasureMarker
           panorama={panoramaRef.current}
           location={currentLocation}
-          visible={isNearTreasure}
+          visible={isNearMarker}
           onFound={onTreasureFound}
         />
       )}
       {isNearTreasure && currentLocation && (
         <div className="proximity-alert">
           <span className="proximity-alert__icon">🔥</span>
-          You're close! Look around for the treasure!
+          You're getting close!
         </div>
       )}
     </div>

@@ -6,6 +6,7 @@ interface GameMapProps {
   currentLocation: TreasureLocation | null;
   onNavigateStreetView: (lat: number, lng: number) => void;
   streetViewPosition?: Coordinates | null;
+  initialPosition: Coordinates;
 }
 
 export function GameMap({
@@ -13,20 +14,20 @@ export function GameMap({
   currentLocation,
   onNavigateStreetView,
   streetViewPosition,
+  initialPosition,
 }: GameMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<google.maps.Map | null>(null);
   const markersRef = useRef<google.maps.Marker[]>([]);
   const [showMapTip, setShowMapTip] = useState(true);
-  const startingLocation = { lat: 52.50315974350624, lng: 13.293348498355584 };
 
   // initialize map
   useEffect(() => {
     if (!containerRef.current) return;
 
     const map = new google.maps.Map(containerRef.current, {
-      center: startingLocation,
-      zoom: 12,
+      center: initialPosition,
+      zoom: 2,
       streetViewControl: false,
       mapTypeControl: false,
       styles: [
