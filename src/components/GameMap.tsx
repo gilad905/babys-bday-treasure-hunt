@@ -16,6 +16,21 @@ export function GameMap({
   const mapRef = useRef<google.maps.Map | null>(null);
   const markersRef = useRef<google.maps.Marker[]>([]);
   const [showMapTip, setShowMapTip] = useState(true);
+  const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
+  // get user geolocation
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+    const watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+      },
+      () => {},
+      { enableHighAccuracy: true, maximumAge: 10000, timeout: 10000 }
+    );
+    return () => {
+      navigator.geolocation.clearWatch(watchId);
+    };
+  }, []);
 
   // initialize map
   useEffect(() => {
@@ -65,28 +80,73 @@ export function GameMap({
     return () => google.maps.event.removeListener(listener);
   }, [onNavigateStreetView]);
 
-  // render found markers
+  // render found markers and user location marker
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
 
     // clear old markers
     markersRef.current.forEach((m) => m.setMap(null));
+    const markers: google.maps.Marker[] = [];
 
-    const markers = foundLocations.map((loc) => {
-      return new google.maps.Marker({
-        position: loc.coordinates,
-        map,
-        icon: {
-          url: "/treasures/treasure-chest.svg",
-          scaledSize: new google.maps.Size(36, 36),
-        },
-        title: `Found: ${loc.id}`,
-      });
+    // found locations
+    foundLocations.forEach((loc) => {
+      markers.push(
+        new google.maps.Marker({
+          position: loc.coordinates,
+          map,
+          icon: {
+            url: "/treasures/treasure-chest.svg",
+            scaledSize: new google.maps.Size(36, 36),
+          },
+          title: `Found: ${loc.id}`,
+        })
+      );
     });
 
+
+    // user location marker
+    if (userLocation) {
+      markers.push(
+        new google.maps.Marker({
+          position: userLocation,
+          map,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 8,
+            fillColor: "#4285F4",
+            fillOpacity: 1,
+            strokeColor: "white",
+            strokeWeight: 2,
+          },
+          title: "Your location",
+        })
+      );
+    }
+
+    // current hunt location marker
+    if (currentLocation) {
+      const [lat, lng] = currentLocation.coordinates.split(",").map(Number);
+      markers.push(
+        new google.maps.Marker({
+          position: { lat, lng },
+          map,
+          icon: {
+            path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+            scale: 6,
+            fillColor: "#FFD600",
+            fillOpacity: 1,
+            strokeColor: "#B8860B",
+            strokeWeight: 2,
+          },
+          title: `Current clue: ${currentLocation.name}`,
+          zIndex: 999,
+        })
+      );
+    }
+
     markersRef.current = markers;
-  }, [foundLocations]);
+  }, [foundLocations, userLocation]);
 
   const handleFlyToHint = useCallback(() => {
     if (!currentLocation || !mapRef.current) return;

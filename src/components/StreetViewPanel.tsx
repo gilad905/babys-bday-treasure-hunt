@@ -168,7 +168,7 @@ export function StreetViewPanel({
       </button>
       {showDistance && lastDistance !== null && (
         <div className="compass-distance" style={{ position: "absolute", top: 50, right: 60, background: "#222b", color: "#fff", padding: "10px 18px", borderRadius: 8, zIndex: 11 }}>
-          {`You are ${(lastDistance < 1000 ? lastDistance.toFixed(1) + ' m' : (lastDistance/1000).toFixed(2) + ' km')} from the clue.`}
+          {`You are ${(lastDistance < 1000 ? lastDistance.toFixed(0) + ' meters' : (lastDistance/1000).toFixed(0) + ' km')} away!`}
         </div>
       )}
       {!svAvailable && (
