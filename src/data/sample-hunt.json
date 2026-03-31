@@ -1,0 +1,43 @@
+{
+  "id": "world-wonders",
+  "name": "World Wonders Hunt",
+  "description": "Travel the globe and find famous landmarks! Follow the clues, explore in Street View, and discover each hidden treasure.",
+  "locations": [
+    {
+      "id": "loc-eiffel",
+      "coordinates": { "lat": 48.8584, "lng": 2.2945 },
+      "clue": "I was built for a fair in the City of Light. Made of iron lattice, I shine bright at night. Find me where the Champ de Mars stretches wide.",
+      "imageUrl": "/treasures/treasure-chest.svg",
+      "streetViewPov": { "heading": 175, "pitch": 30 },
+      "proximityRadius": 120,
+      "congratsMessage": "Magnifique! You found the Eiffel Tower! 🗼"
+    },
+    {
+      "id": "loc-colosseum",
+      "coordinates": { "lat": 41.8902, "lng": 12.4922 },
+      "clue": "In an ancient city of emperors and gladiators, I once hosted their greatest spectacles. My arches have stood for nearly two thousand years.",
+      "imageUrl": "/treasures/treasure-chest.svg",
+      "streetViewPov": { "heading": 250, "pitch": 15 },
+      "proximityRadius": 150,
+      "congratsMessage": "Ave! You discovered the Colosseum! 🏛️"
+    },
+    {
+      "id": "loc-bigben",
+      "coordinates": { "lat": 51.5007, "lng": -0.1246 },
+      "clue": "I watch over Parliament beside the Thames. My bell is famous, though most people call the whole tower by its name. Look for me in London.",
+      "imageUrl": "/treasures/treasure-chest.svg",
+      "streetViewPov": { "heading": 10, "pitch": 25 },
+      "proximityRadius": 100,
+      "congratsMessage": "Brilliant! You found Big Ben! 🔔"
+    },
+    {
+      "id": "loc-statue-liberty",
+      "coordinates": { "lat": 40.6892, "lng": -74.0445 },
+      "clue": "A gift from France that welcomes travelers by sea. I hold a torch and a tablet in New York's harbor. Liberty is my name.",
+      "imageUrl": "/treasures/treasure-chest.svg",
+      "streetViewPov": { "heading": 180, "pitch": 30 },
+      "proximityRadius": 200,
+      "congratsMessage": "Amazing! You found the Statue of Liberty! 🗽"
+    }
+  ]
+}

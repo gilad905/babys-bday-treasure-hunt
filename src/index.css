@@ -1,0 +1,4 @@
+/* minimal global reset — all game styles are in App.css */
+body {
+  margin: 0;
+}
