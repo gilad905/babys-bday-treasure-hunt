@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { useGameState } from "./hooks/useGameState";
 import { StartScreen } from "./components/StartScreen";
@@ -10,10 +10,11 @@ import { FoundOverlay } from "./components/FoundOverlay";
 import { WelcomeModal } from "./components/WelcomeModal";
 // import sampleHunt from "./data/sample-hunt.json";
 import realHunt from "./data/hunt.json";
+import { HUNT_NAME } from "./constants/hunt";
 import type { TreasureHunt, Coordinates } from "./types/hunt";
 import "./App.css";
 
-const hunt = realHunt as TreasureHunt;
+const hunt = { ...realHunt, name: HUNT_NAME } as TreasureHunt;
 // const hunt = sampleHunt as TreasureHunt;
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
 
@@ -24,6 +25,10 @@ const initialPosition: Coordinates = {
 };
 
 function App() {
+  useEffect(() => {
+    document.title = HUNT_NAME;
+  }, []);
+
   const {
     state,
     currentLocation,
@@ -100,7 +105,7 @@ function App() {
   if (!API_KEY || API_KEY === "YOUR_API_KEY_HERE") {
     return (
       <div className="api-key-missing">
-        <h1>🗺️ Baby's Bday Treasure Hunt</h1>
+        <h1>{HUNT_NAME}</h1>
         <p>
           To play, you need a Google Maps API key. Create one at{" "}
           <a
@@ -142,6 +147,7 @@ function App() {
           <div className="game-layout">
             <aside className="game-layout__sidebar">
               <CluePanel
+                huntName={HUNT_NAME}
                 location={currentLocation}
                 progress={progress}
                 onReset={handleReset}

@@ -1,16 +1,22 @@
 import type { TreasureLocation } from "../types/hunt";
 
 interface CluePanelProps {
+  huntName: string;
   location: TreasureLocation;
   progress: { current: number; total: number };
   onReset: () => void;
 }
 
-export function CluePanel({ location, progress, onReset }: CluePanelProps) {
+export function CluePanel({
+  huntName,
+  location,
+  progress,
+  onReset,
+}: CluePanelProps) {
   return (
     <div className="clue-panel">
       <div className="clue-panel__header">
-        <h2>🗺️ Baby's Bday Treasure Hunt</h2>
+        <h2>{huntName}</h2>
         <span className="clue-panel__progress">
           Location {progress.current + 1} of {progress.total}
         </span>
