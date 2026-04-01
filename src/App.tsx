@@ -7,6 +7,7 @@ import { CluePanel } from "./components/CluePanel";
 import { GameMap } from "./components/GameMap";
 import { StreetViewPanel } from "./components/StreetViewPanel";
 import { FoundOverlay } from "./components/FoundOverlay";
+import { WelcomeModal } from "./components/WelcomeModal";
 // import sampleHunt from "./data/sample-hunt.json";
 import realHunt from "./data/hunt.json";
 import type { TreasureHunt, Coordinates } from "./types/hunt";
@@ -34,6 +35,7 @@ function App() {
   } = useGameState(hunt);
   const [screen, setScreen] = useState<Screen>(state ? "playing" : "start");
   const [justFoundMessage, setJustFoundMessage] = useState("");
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   const streetViewRef = useRef<HTMLDivElement>(null);
   const [streetViewPosition, setStreetViewPosition] =
     useState<Coordinates | null>(null);
@@ -41,6 +43,7 @@ function App() {
   const handleStart = useCallback(() => {
     startGame();
     setScreen("playing");
+    setShowWelcomeModal(true);
   }, [startGame]);
 
   const handleResume = useCallback(() => {
@@ -66,6 +69,7 @@ function App() {
   const handleReset = useCallback(() => {
     resetGame();
     setScreen("start");
+    setShowWelcomeModal(false);
   }, [resetGame]);
 
   const handleNavigateStreetView = useCallback((lat: number, lng: number) => {
@@ -171,6 +175,14 @@ function App() {
                 message={justFoundMessage}
                 nextClue={nextClue}
                 onContinue={handleFoundContinue}
+              />
+            )}
+
+            {showWelcomeModal && (
+              <WelcomeModal
+                huntName={hunt.name}
+                firstClue={hunt.locations[0]?.clue}
+                onClose={() => setShowWelcomeModal(false)}
               />
             )}
           </div>
