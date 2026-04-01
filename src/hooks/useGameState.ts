@@ -40,6 +40,7 @@ export function useGameState(hunt: TreasureHunt | null) {
       currentLocationIndex: 0,
       foundLocations: [],
       startedAt: Date.now(),
+      compassCount: 10,
     };
     saveState(initial);
     setState(initial);
@@ -57,10 +58,21 @@ export function useGameState(hunt: TreasureHunt | null) {
         state.currentLocationIndex + 1 >= hunt.locations.length
           ? Date.now()
           : undefined,
+      compassCount: state.compassCount ?? 10,
     };
     saveState(next);
     setState(next);
   }, [state, hunt]);
+  // decrement compass count and persist
+  const decrementCompassCount = useCallback(() => {
+    if (!state) return;
+    const next: GameState = {
+      ...state,
+      compassCount: (state.compassCount ?? 10) - 1,
+    };
+    saveState(next);
+    setState(next);
+  }, [state]);
 
   const resetGame = useCallback(() => {
     if (!hunt) return;
@@ -89,5 +101,6 @@ export function useGameState(hunt: TreasureHunt | null) {
     startGame,
     foundLocation,
     resetGame,
+    decrementCompassCount,
   };
 }

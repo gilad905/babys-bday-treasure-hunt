@@ -17,8 +17,10 @@ const hunt = realHunt as TreasureHunt;
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
 
 type Screen = "start" | "playing" | "found" | "complete";
-const initialPosition: Coordinates = { lat: 52.50315974350624, lng: 13.293348498355584 };
-
+const initialPosition: Coordinates = {
+  lat: 52.50315974350624,
+  lng: 13.293348498355584,
+};
 
 function App() {
   const {
@@ -28,11 +30,13 @@ function App() {
     startGame,
     foundLocation,
     resetGame,
+    decrementCompassCount,
   } = useGameState(hunt);
   const [screen, setScreen] = useState<Screen>(state ? "playing" : "start");
   const [justFoundMessage, setJustFoundMessage] = useState("");
   const streetViewRef = useRef<HTMLDivElement>(null);
-  const [streetViewPosition, setStreetViewPosition] = useState<Coordinates | null>(null);
+  const [streetViewPosition, setStreetViewPosition] =
+    useState<Coordinates | null>(null);
 
   const handleStart = useCallback(() => {
     startGame();
@@ -156,6 +160,8 @@ function App() {
                   foundLocations={foundLocationsData.map((l) => l.coordinates)}
                   onTreasureFound={handleTreasureFound}
                   onPositionChange={setStreetViewPosition}
+                  compassCount={state?.compassCount ?? 10}
+                  onUseCompass={decrementCompassCount}
                 />
               </div>
             </main>

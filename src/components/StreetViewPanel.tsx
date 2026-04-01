@@ -8,6 +8,8 @@ interface StreetViewPanelProps {
   onTreasureFound: () => void;
   initialPosition: Coordinates;
   onPositionChange?: (pos: Coordinates) => void;
+  compassCount: number;
+  onUseCompass: () => void;
 }
 
 function computeDistance(a: google.maps.LatLng, b: google.maps.LatLng): number {
@@ -20,13 +22,15 @@ export function StreetViewPanel({
   onTreasureFound,
   initialPosition,
   onPositionChange,
+  compassCount,
+  onUseCompass,
 }: StreetViewPanelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const panoramaRef = useRef<google.maps.StreetViewPanorama | null>(null);
   const [isNearTreasure, setIsNearTreasure] = useState(false);
   const [isNearMarker, setIsNearMarker] = useState(false);
   const [svAvailable, setSvAvailable] = useState(true);
-  const [compassesLeft, setCompassesLeft] = useState(10);
+  // compassCount is now managed by game state
   const [lastDistance, setLastDistance] = useState<number | null>(null);
   const [showDistance, setShowDistance] = useState(false);
 
@@ -161,7 +165,7 @@ export function StreetViewPanel({
 
   // handle compass button click
   const handleCompass = () => {
-    if (!currentLocation || compassesLeft <= 0) return;
+    if (!currentLocation) return;
     const panorama = panoramaRef.current;
     if (!panorama) return;
     const pos = panorama.getPosition();
@@ -171,7 +175,7 @@ export function StreetViewPanel({
     const distance = computeDistance(pos, targetLatLng);
     setLastDistance(distance);
     setShowDistance(true);
-    setCompassesLeft((prev) => prev - 1);
+    onUseCompass();
     setTimeout(() => setShowDistance(false), 3500);
   };
 
@@ -181,10 +185,10 @@ export function StreetViewPanel({
       <button
         className="compass-btn"
         onClick={handleCompass}
-        disabled={compassesLeft <= 0 || !currentLocation}
+        disabled={compassCount <= 0 || !currentLocation}
         style={{ position: "absolute", top: 10, right: 60, zIndex: 10 }}
       >
-        🧭 Compass ({compassesLeft})
+        🧭 Compass ({compassCount})
       </button>
       {showDistance && lastDistance !== null && (
         <div

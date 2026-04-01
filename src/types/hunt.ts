@@ -37,4 +37,5 @@ export interface GameState {
   foundLocations: string[];
   startedAt: number;
   completedAt?: number;
+  compassCount: number; // how many times the compass was used
 }

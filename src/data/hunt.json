@@ -14,16 +14,6 @@
       "nearRadius": 300
     },
     {
-      "id": "loc-goura-pakora",
-      "name": "Goura Pakora, where we had our first date",
-      "coordinates": { "lat": 52.51067233844895, "lng": 13.45733136453828 },
-      "clue": "Where two strangers found out each other's names, and Curry helped to start the flames",
-      "imageUrl": "/treasures/treasure-chest.svg",
-      "streetViewPov": { "heading": 175, "pitch": 30 },
-      "markerRadius": 60,
-      "nearRadius": 300
-    },
-    {
       "id": "loc-celia-vinas",
       "name": "Celia Viñas Highschool",
       "coordinates": { "lat": 36.83796078847772, "lng": -2.461368599884345 },
@@ -38,6 +28,16 @@
       "name": "Calar Alto Observatory",
       "coordinates": { "lat": 37.2206979999987, "lng": -2.5475590378484947 },
       "clue": "Once a year, after the carols and the holiday glow, They went to the tall hill to play in the snow",
+      "imageUrl": "/treasures/treasure-chest.svg",
+      "streetViewPov": { "heading": 175, "pitch": 30 },
+      "markerRadius": 60,
+      "nearRadius": 300
+    },
+    {
+      "id": "loc-goura-pakora",
+      "name": "Goura Pakora, where we had our first date",
+      "coordinates": { "lat": 52.51067233844895, "lng": 13.45733136453828 },
+      "clue": "Where two strangers found out each other's names, and Curry helped to start the flames",
       "imageUrl": "/treasures/treasure-chest.svg",
       "streetViewPov": { "heading": 175, "pitch": 30 },
       "markerRadius": 60,
