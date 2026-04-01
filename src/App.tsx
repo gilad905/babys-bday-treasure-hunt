@@ -117,7 +117,8 @@ function App() {
           >
             Google Cloud Console
           </a>{" "}
-          and add it to your <code>.env</code> file:
+          and provide it as <code>VITE_GOOGLE_MAPS_CLIENT_KEY</code> in your
+          build environment (or local <code>.env</code>):
         </p>
         <pre>VITE_GOOGLE_MAPS_CLIENT_KEY=your_public_browser_key_here</pre>
         <p>
