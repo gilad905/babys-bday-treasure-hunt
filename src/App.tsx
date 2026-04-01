@@ -10,7 +10,7 @@ import { FoundOverlay } from "./components/FoundOverlay";
 import { WelcomeModal } from "./components/WelcomeModal";
 // import sampleHunt from "./data/sample-hunt.json";
 import realHunt from "./data/hunt.json";
-import { HUNT_NAME } from "./constants/hunt";
+import { HUNT_NAME, HOW_TO_PLAY } from "./constants/hunt";
 import type { TreasureHunt, Coordinates } from "./types/hunt";
 import "./App.css";
 
@@ -26,7 +26,7 @@ const initialPosition: Coordinates = {
 
 function App() {
   useEffect(() => {
-    document.title = HUNT_NAME;
+    document.title = HUNT_NAME.replace(/\p{Extended_Pictographic}/gu, '');
   }, []);
 
   const {
@@ -148,6 +148,7 @@ function App() {
             <aside className="game-layout__sidebar">
               <CluePanel
                 huntName={HUNT_NAME}
+                howToPlay={HOW_TO_PLAY}
                 location={currentLocation}
                 progress={progress}
                 onReset={handleReset}
@@ -187,7 +188,8 @@ function App() {
             {showWelcomeModal && (
               <WelcomeModal
                 huntName={hunt.name}
-                firstClue={hunt.locations[0]?.clue}
+                howToPlay={HOW_TO_PLAY}
+                // firstClue={hunt.locations[0]?.clue}
                 onClose={() => setShowWelcomeModal(false)}
               />
             )}

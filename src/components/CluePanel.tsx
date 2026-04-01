@@ -2,6 +2,7 @@ import type { TreasureLocation } from "../types/hunt";
 
 interface CluePanelProps {
   huntName: string;
+  howToPlay: string;
   location: TreasureLocation;
   progress: { current: number; total: number };
   onReset: () => void;
@@ -9,6 +10,7 @@ interface CluePanelProps {
 
 export function CluePanel({
   huntName,
+  howToPlay,
   location,
   progress,
   onReset,
@@ -18,7 +20,7 @@ export function CluePanel({
       <div className="clue-panel__header">
         <h2>{huntName}</h2>
         <span className="clue-panel__progress">
-          Location {progress.current + 1} of {progress.total}
+          Treasure {progress.current + 1} of {progress.total}
         </span>
       </div>
 
@@ -31,15 +33,13 @@ export function CluePanel({
 
       <div className="clue-panel__clue">
         <h3>📜 Clue</h3>
-        <p style={{ fontStyle: "italic" }}>{location.clue}</p>
+        <p>{location.clue}</p>
       </div>
 
       <div className="clue-panel__instructions">
         <p>
-          <strong>How to play:</strong> Use the map to explore the world.
-          Double-click any location to open Street View there. Navigate in
-          Street View to find the treasure marker. When you're close enough, the
-          treasure will appear — click it to collect!
+          <strong>How to play:</strong>
+          {howToPlay}
         </p>
       </div>
 

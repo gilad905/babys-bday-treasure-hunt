@@ -2,11 +2,17 @@ import { useEffect, useRef, useState } from "react";
 
 interface WelcomeModalProps {
   huntName: string;
-  firstClue?: string;
+  howToPlay: string;
+  // firstClue?: string;
   onClose: () => void;
 }
 
-export function WelcomeModal({ huntName, firstClue, onClose }: WelcomeModalProps) {
+export function WelcomeModal({
+  huntName,
+  howToPlay,
+  // firstClue,
+  onClose,
+}: WelcomeModalProps) {
   const [visible, setVisible] = useState(false);
   const closeTimerRef = useRef<number | null>(null);
 
@@ -30,18 +36,22 @@ export function WelcomeModal({ huntName, firstClue, onClose }: WelcomeModalProps
   return (
     <div className={`welcome-modal ${visible ? "welcome-modal--visible" : ""}`}>
       <div className="welcome-modal__card">
-        <h2>Welcome to the hunt!</h2>
-        <p className="welcome-modal__subtitle">{huntName}</p>
+        <h2>Welcome to {huntName}!</h2>
+        {/* <p className="welcome-modal__subtitle">{huntName}</p> */}
         <p className="welcome-modal__message">
-          Explore the map, jump into Street View, and look around carefully for each treasure.
+          Let's hunt for some treasures! Each treasure is hidden somewhere
+          related to baby's life. To find it, you get clues that will help you.
+          Once you find the next treasure, you'll get the next clue.
+          <hr className="welcome-modal__divider" />
+          {howToPlay}
         </p>
 
-        {firstClue && (
+        {/* {firstClue && (
           <div className="welcome-modal__clue">
             <h3>Your first clue</h3>
             <p>{firstClue}</p>
           </div>
-        )}
+        )} */}
 
         <button className="welcome-modal__button" onClick={handleClose}>
           Start Exploring

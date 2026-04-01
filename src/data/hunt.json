@@ -47,7 +47,7 @@
       "id": "loc-bar-giora",
       "name": "Bar Giora",
       "coordinates": { "lat": 31.730543234721097, "lng": 35.07581742951666 },
-      "clue": "Holy mountains, good place to chill and rest, with two old folks who try their best",
+      "clue": "Holy mountains, a place to chill and rest, including two folks who try their best",
       "imageUrl": "/treasures/treasure-chest.svg",
       "streetViewPov": { "heading": 175, "pitch": 30 },
       "markerRadius": 60,

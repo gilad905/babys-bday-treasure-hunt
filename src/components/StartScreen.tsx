@@ -18,7 +18,7 @@ export function StartScreen({ hunt, hasExistingProgress, onStart, onResume }: St
         <div className="start-screen__info">
           <div className="start-screen__info-item">
             <span className="start-screen__info-value">{hunt.locations.length}</span>
-            <span className="start-screen__info-label">Locations</span>
+            <span className="start-screen__info-label">Treasures</span>
           </div>
         </div>
 
