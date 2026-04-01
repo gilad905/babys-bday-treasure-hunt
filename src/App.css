@@ -290,6 +290,8 @@ body {
 }
 .clue-panel__instructions strong {
   color: var(--color-text);
+  display: block;
+  margin-bottom: 0.25rem;
 }
 .clue-panel__reset {
   margin-top: auto;
