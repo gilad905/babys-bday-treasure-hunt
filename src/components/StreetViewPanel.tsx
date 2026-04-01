@@ -55,11 +55,11 @@ export function StreetViewPanel({
       position: startPos,
       pov: { heading: 0, pitch: 0 },
       zoom: 1,
-      addressControl: true,
+      addressControl: false,
       linksControl: true,
       panControl: true,
       enableCloseButton: false,
-      fullscreenControl: true,
+      fullscreenControl: false,
     });
 
     panoramaRef.current = panorama;
@@ -231,24 +231,11 @@ export function StreetViewPanel({
         className="compass-btn"
         onClick={handleCompass}
         disabled={compassCount <= 0 || !currentLocation}
-        style={{ position: "absolute", top: 10, right: 60, zIndex: 10 }}
       >
         🧭 Compass ({compassCount})
       </button>
       {showDistance && lastDistance !== null && (
-        <div
-          className="compass-distance"
-          style={{
-            position: "absolute",
-            top: 50,
-            right: 60,
-            background: "#222b",
-            color: "#fff",
-            padding: "10px 18px",
-            borderRadius: 8,
-            zIndex: 11,
-          }}
-        >
+        <div className="compass-distance">
           {getDistanceString(lastDistance)}
         </div>
       )}

@@ -30,6 +30,7 @@ export function GameMap({
       zoom: 2,
       streetViewControl: false,
       mapTypeControl: false,
+      fullscreenControl: false,
       styles: [
         {
           featureType: "poi",

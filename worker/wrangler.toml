@@ -9,4 +9,4 @@ ALLOWED_ORIGINS = "https://gilad905.github.io,http://localhost:5173"
 
 # simple per-ip fixed-window limiter
 RATE_LIMIT_WINDOW_SECONDS = "60"
-RATE_LIMIT_MAX_REQUESTS = "60"
+RATE_LIMIT_MAX_REQUESTS = "600"

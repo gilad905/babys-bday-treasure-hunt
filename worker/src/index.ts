@@ -52,7 +52,7 @@ function getClientIp(request: Request): string {
 
 function isRateLimited(request: Request, env: Env): boolean {
 	const windowSeconds = Number(env.RATE_LIMIT_WINDOW_SECONDS || "60");
-	const maxRequests = Number(env.RATE_LIMIT_MAX_REQUESTS || "60");
+	const maxRequests = Number(env.RATE_LIMIT_MAX_REQUESTS || "600");
 	const now = Math.floor(Date.now() / 1000);
 	const ip = getClientIp(request);
 	const existing = ipRateWindow.get(ip);
@@ -119,6 +119,7 @@ export default {
 		upstreamUrl.searchParams.set("source", "outdoor");
 		upstreamUrl.searchParams.set("key", env.GOOGLE_MAPS_SERVER_KEY);
 
+		// console.debug(`Fetching ${upstreamUrl.toString()}`);
 		const upstreamResponse = await fetch(upstreamUrl.toString());
 		if (!upstreamResponse.ok) {
 			return jsonResponse({ error: "upstream_error" }, 502, origin);
