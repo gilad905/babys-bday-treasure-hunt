@@ -36,3 +36,5 @@ dist-ssr
 # cloudflare worker secrets
 .dev.vars
 worker/.dev.vars
+
+//
