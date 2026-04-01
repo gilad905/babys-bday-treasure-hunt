@@ -16,7 +16,9 @@ import "./App.css";
 
 const hunt = { ...realHunt, name: HUNT_NAME } as TreasureHunt;
 // const hunt = sampleHunt as TreasureHunt;
-const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
+const API_KEY =
+  (import.meta.env.VITE_GOOGLE_MAPS_CLIENT_KEY as string) ||
+  (import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string);
 
 type Screen = "start" | "playing" | "found" | "complete";
 const initialPosition: Coordinates = {
@@ -102,12 +104,12 @@ function App() {
       ? hunt.locations[state.currentLocationIndex + 1].clue
       : null;
 
-  if (!API_KEY || API_KEY === "YOUR_API_KEY_HERE") {
+  if (!API_KEY || API_KEY === "YOUR_PUBLIC_BROWSER_KEY_HERE") {
     return (
       <div className="api-key-missing">
         <h1>{HUNT_NAME}</h1>
         <p>
-          To play, you need a Google Maps API key. Create one at{" "}
+          To play, you need a Google Maps browser key. Create one at{" "}
           <a
             href="https://console.cloud.google.com/google/maps-apis"
             target="_blank"
@@ -117,10 +119,11 @@ function App() {
           </a>{" "}
           and add it to your <code>.env</code> file:
         </p>
-        <pre>VITE_GOOGLE_MAPS_API_KEY=your_key_here</pre>
+        <pre>VITE_GOOGLE_MAPS_CLIENT_KEY=your_public_browser_key_here</pre>
         <p>
-          Make sure to enable the <strong>Maps JavaScript API</strong> and{" "}
-          <strong>Street View</strong> for your key.
+          make sure to enable the <strong>Maps JavaScript API</strong>, lock the
+          key to your domain with HTTP referrer restrictions, and keep any
+          server key in your backend only.
         </p>
       </div>
     );

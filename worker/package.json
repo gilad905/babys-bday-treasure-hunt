@@ -1,0 +1,14 @@
+{
+  "name": "maps-matmon-worker",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "wrangler": "^4.10.0"
+  }
+}

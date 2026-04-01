@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import type { TreasureLocation, Coordinates } from "../types/hunt";
 import { TreasureMarker } from "./TreasureMarker";
 
+const PROXY_BASE_URL = (import.meta.env.VITE_PROXY_BASE_URL as string) || "";
+
 interface StreetViewPanelProps {
   currentLocation: TreasureLocation | null;
   foundLocations: Coordinates[];
@@ -14,6 +16,16 @@ interface StreetViewPanelProps {
 
 function computeDistance(a: google.maps.LatLng, b: google.maps.LatLng): number {
   return google.maps.geometry.spherical.computeDistanceBetween(a, b);
+}
+
+interface StreetViewMetadataResponse {
+  ok: boolean;
+  status?: string;
+  location?: {
+    lat: number;
+    lng: number;
+  };
+  panoId?: string;
 }
 
 export function StreetViewPanel({
@@ -102,19 +114,52 @@ export function StreetViewPanel({
     (lat: number, lng: number, heading?: number, pitch?: number) => {
       const panorama = panoramaRef.current;
       if (!panorama) return;
-      const sv = new google.maps.StreetViewService();
-      sv.getPanorama({ location: { lat, lng }, radius: 200 })
-        .then(({ data }) => {
-          if (data.location?.pano) {
-            panorama.setPano(data.location.pano);
-            if (heading !== undefined && pitch !== undefined) {
-              panorama.setPov({ heading, pitch });
+
+      const applyView = (panoId?: string) => {
+        if (panoId) {
+          panorama.setPano(panoId);
+        } else {
+          panorama.setPosition({ lat, lng });
+        }
+        if (heading !== undefined && pitch !== undefined) {
+          panorama.setPov({ heading, pitch });
+        }
+        setSvAvailable(true);
+      };
+
+      const fallbackToJsService = () => {
+        const sv = new google.maps.StreetViewService();
+        sv.getPanorama({ location: { lat, lng }, radius: 200 })
+          .then(({ data }) => {
+            if (data.location?.pano) {
+              applyView(data.location.pano);
             }
-            setSvAvailable(true);
+          })
+          .catch(() => {
+            setSvAvailable(false);
+          });
+      };
+
+      if (!PROXY_BASE_URL) {
+        fallbackToJsService();
+        return;
+      }
+
+      const metadataUrl = `${PROXY_BASE_URL}/api/streetview/metadata?lat=${lat}&lng=${lng}`;
+      fetch(metadataUrl)
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error("proxy request failed");
           }
+          const data = (await response.json()) as StreetViewMetadataResponse;
+          if (data.ok && data.status === "OK") {
+            applyView(data.panoId);
+            return;
+          }
+          setSvAvailable(false);
         })
         .catch(() => {
-          setSvAvailable(false);
+          fallbackToJsService();
         });
     },
     [],
