@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Coordinates, TreasureLocation } from "../types/hunt";
 
 interface GameMapProps {
-  foundLocations: { id: string; coordinates: Coordinates }[];
+  foundLocations: { id: string; name: string; coordinates: Coordinates }[];
   currentLocation: TreasureLocation | null;
   onNavigateStreetView: (lat: number, lng: number) => void;
   streetViewPosition?: Coordinates | null;
@@ -86,10 +86,10 @@ export function GameMap({
           position: loc.coordinates,
           map,
           icon: {
-            url: "/treasures/treasure-chest.svg",
+            url: "./treasures/treasure-chest.svg",
             scaledSize: new google.maps.Size(36, 36),
           },
-          title: `Found: ${loc.id}`,
+          title: `Found: ${loc.name}`,
         }),
       );
     });

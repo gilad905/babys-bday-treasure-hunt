@@ -148,10 +148,7 @@ function App() {
   // derive found locations with coordinates for map markers
   const foundLocationsData = hunt.locations
     .filter((loc) => state?.foundLocations.includes(loc.id))
-    .map((loc) => ({ id: loc.id, coordinates: loc.coordinates }))
-    .map((loc) => {
-      return { id: loc.id, coordinates: loc.coordinates };
-    });
+    .map((loc) => ({ id: loc.id, coordinates: loc.coordinates, name: loc.name }));
 
   // derive next clue for found overlay
   const nextClue =

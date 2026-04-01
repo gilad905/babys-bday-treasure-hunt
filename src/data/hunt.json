@@ -8,7 +8,7 @@
       "name": "Los Tintos Village",
       "coordinates": { "lat": -1.8752807773315796, "lng": -79.86142016148334 },
       "clue": "Every weekend, feeling young and fine, they would drive all together to the place of red wines",
-      "imageUrl": "/treasures/treasure-chest.svg",
+      "imageUrl": "./treasures/treasure-chest.svg",
       "streetViewPov": { "heading": 175, "pitch": 30 },
       "markerRadius": 60,
       "nearRadius": 300
@@ -18,7 +18,7 @@
       "name": "Celia Viñas Highschool",
       "coordinates": { "lat": 36.83796078847772, "lng": -2.461368599884345 },
       "clue": "An emo immigrant looking for friends, in the lunch breaks she learned to blend",
-      "imageUrl": "/treasures/treasure-chest.svg",
+      "imageUrl": "./treasures/treasure-chest.svg",
       "streetViewPov": { "heading": 175, "pitch": 30 },
       "markerRadius": 60,
       "nearRadius": 300
@@ -28,7 +28,7 @@
       "name": "Calar Alto Observatory",
       "coordinates": { "lat": 37.2206979999987, "lng": -2.5475590378484947 },
       "clue": "Once a year, after the carols and the holiday glow, They went to the tall hill to play in the snow",
-      "imageUrl": "/treasures/treasure-chest.svg",
+      "imageUrl": "./treasures/treasure-chest.svg",
       "streetViewPov": { "heading": 175, "pitch": 30 },
       "markerRadius": 60,
       "nearRadius": 300
@@ -38,7 +38,7 @@
       "name": "Goura Pakora, where we had our first date",
       "coordinates": { "lat": 52.51067233844895, "lng": 13.45733136453828 },
       "clue": "Where two strangers found out each other's names, and Curry helped to start the flames",
-      "imageUrl": "/treasures/treasure-chest.svg",
+      "imageUrl": "./treasures/treasure-chest.svg",
       "streetViewPov": { "heading": 175, "pitch": 30 },
       "markerRadius": 60,
       "nearRadius": 300
@@ -48,7 +48,7 @@
       "name": "Bar Giora",
       "coordinates": { "lat": 31.730543234721097, "lng": 35.07581742951666 },
       "clue": "Holy mountains, a place to chill and rest, including two folks who try their best",
-      "imageUrl": "/treasures/treasure-chest.svg",
+      "imageUrl": "./treasures/treasure-chest.svg",
       "streetViewPov": { "heading": 175, "pitch": 30 },
       "markerRadius": 60,
       "nearRadius": 300
@@ -58,7 +58,7 @@
       "name": "Where I Proposed (near Museum Island)",
       "coordinates": { "lat": 52.517797113824905, "lng": 13.398017316706584 },
       "clue": "A lonely island among history and art, one cold night marked an important start",
-      "imageUrl": "/treasures/treasure-chest.svg",
+      "imageUrl": "./treasures/treasure-chest.svg",
       "streetViewPov": { "heading": 175, "pitch": 30 },
       "markerRadius": 60,
       "nearRadius": 300

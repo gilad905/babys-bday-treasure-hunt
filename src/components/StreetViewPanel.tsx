@@ -184,7 +184,7 @@ export function StreetViewPanel({
         position: coord,
         map: panorama as unknown as google.maps.Map,
         icon: {
-          url: "/treasures/treasure-chest.svg",
+          url: "./treasures/treasure-chest.svg",
           scaledSize: new google.maps.Size(32, 32),
         },
         opacity: 0.6,
