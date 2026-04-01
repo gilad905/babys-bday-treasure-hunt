@@ -44,8 +44,43 @@ function App() {
   const [justFoundMessage, setJustFoundMessage] = useState("");
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   const streetViewRef = useRef<HTMLDivElement>(null);
+  const mainPanelsRef = useRef<HTMLElement>(null);
+  const isResizingPanelsRef = useRef(false);
   const [streetViewPosition, setStreetViewPosition] =
     useState<Coordinates | null>(null);
+  const [mapPanelSize, setMapPanelSize] = useState(50);
+
+  const updatePanelSplit = useCallback((clientY: number) => {
+    const container = mainPanelsRef.current;
+    if (!container) return;
+    const rect = container.getBoundingClientRect();
+    if (rect.height <= 0) return;
+    const nextSize = ((clientY - rect.top) / rect.height) * 100;
+    const clampedSize = Math.max(20, Math.min(80, nextSize));
+    setMapPanelSize(clampedSize);
+  }, []);
+
+  useEffect(() => {
+    const handlePointerMove = (event: PointerEvent) => {
+      if (!isResizingPanelsRef.current) return;
+      updatePanelSplit(event.clientY);
+    };
+
+    const handlePointerUp = () => {
+      if (!isResizingPanelsRef.current) return;
+      isResizingPanelsRef.current = false;
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+    };
+  }, [updatePanelSplit]);
 
   const handleStart = useCallback(() => {
     startGame();
@@ -89,6 +124,26 @@ function App() {
     };
     container?.navigateTo?.(lat, lng);
   }, []);
+
+  const handleResizeStart = useCallback(() => {
+    isResizingPanelsRef.current = true;
+    document.body.style.cursor = "row-resize";
+    document.body.style.userSelect = "none";
+  }, []);
+
+  const handleResizeKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key === "ArrowUp") {
+        event.preventDefault();
+        setMapPanelSize((prev) => Math.max(20, prev - 2));
+      }
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        setMapPanelSize((prev) => Math.min(80, prev + 2));
+      }
+    },
+    [],
+  );
 
   // derive found locations with coordinates for map markers
   const foundLocationsData = hunt.locations
@@ -158,8 +213,11 @@ function App() {
                 onReset={handleReset}
               />
             </aside>
-            <main className="game-layout__main">
-              <div className="game-layout__map">
+            <main className="game-layout__main" ref={mainPanelsRef}>
+              <div
+                className="game-layout__map"
+                style={{ flex: `0 0 ${mapPanelSize}%` }}
+              >
                 <GameMap
                   initialPosition={initialPosition}
                   foundLocations={foundLocationsData}
@@ -168,7 +226,20 @@ function App() {
                   streetViewPosition={streetViewPosition}
                 />
               </div>
-              <div className="game-layout__street-view" ref={streetViewRef}>
+              <div
+                className="game-layout__panel-resizer"
+                role="separator"
+                aria-orientation="horizontal"
+                aria-label="Resize map and street view panels"
+                tabIndex={0}
+                onPointerDown={handleResizeStart}
+                onKeyDown={handleResizeKeyDown}
+              />
+              <div
+                className="game-layout__street-view"
+                ref={streetViewRef}
+                style={{ flex: `0 0 ${100 - mapPanelSize}%` }}
+              >
                 <StreetViewPanel
                   initialPosition={initialPosition}
                   currentLocation={currentLocation}

@@ -202,15 +202,28 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 .game-layout__map {
-  flex: 1;
+  flex: 1 1 0;
   position: relative;
+  min-height: 120px;
+}
+.game-layout__panel-resizer {
+  height: 10px;
+  background: var(--color-surface-light);
+  border-top: 1px solid #0006;
+  border-bottom: 1px solid #0006;
+  cursor: row-resize;
+  flex: 0 0 auto;
+}
+.game-layout__panel-resizer:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
 }
 .game-layout__street-view {
-  flex: 1;
+  flex: 1 1 0;
   position: relative;
-  border-top: 2px solid var(--color-surface-light);
 }
 
 /* ── clue panel ── */
@@ -720,6 +733,9 @@ body {
   /* .game-layout__main { flex-direction: row; } */
   .game-layout__map {
     flex: 1;
+  }
+  .game-layout__panel-resizer {
+    display: none;
   }
   .game-layout__street-view {
     flex: 1;
