@@ -52,7 +52,7 @@ function getClientIp(request: Request): string {
 
 function isRateLimited(request: Request, env: Env): boolean {
 	const windowSeconds = Number(env.RATE_LIMIT_WINDOW_SECONDS || "60");
-	const maxRequests = Number(env.RATE_LIMIT_MAX_REQUESTS || "600");
+	const maxRequests = 600;
 	const now = Math.floor(Date.now() / 1000);
 	const ip = getClientIp(request);
 	const existing = ipRateWindow.get(ip);
