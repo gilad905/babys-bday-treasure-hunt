@@ -66,9 +66,11 @@ export function useGameState(hunt: TreasureHunt | null) {
   // decrement compass count and persist
   const decrementCompassCount = useCallback(() => {
     if (!state) return;
+    const currentCount = state.compassCount ?? 10;
+    const newCount = currentCount == 1 ? 10 : (currentCount - 1);
     const next: GameState = {
       ...state,
-      compassCount: (state.compassCount ?? 10) - 1,
+      compassCount: newCount,
     };
     saveState(next);
     setState(next);
